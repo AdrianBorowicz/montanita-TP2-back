@@ -19,7 +19,7 @@ const Products = new Schema({
         default: 0,
     },
     category: {
-        type: categories,
+        type: Object,
     }
 });
 
