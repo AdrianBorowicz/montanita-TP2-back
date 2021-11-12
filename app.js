@@ -2,17 +2,15 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require('mongoose');
-const bcrypt= require('bcrypt');
 const cors = require('cors')
+const auth = require('./middlewares/auth.js')
 
-app.use(cors())
-app.use(bodyParser.json())
+app.use(cors()).use(bodyParser.json());
 
-const Category=require('./models/categories');
-const { truncate } = require("fs");
 const DSN = 'mongodb://localhost:27017/montanita';
 
-
+const productCtrl = require('./controllers/ProductController.js');
+const userCtrl = require('./controllers/UserController');
 
 app.use(async (req, res, next)=>{
     try{
@@ -20,9 +18,7 @@ app.use(async (req, res, next)=>{
             serverSelectionTimeoutMS:3000,
         });
         next();
-
         mongoose.connection.on('error', err=>{
-
         })
     } catch(err){
         console.log(err);
@@ -30,63 +26,32 @@ app.use(async (req, res, next)=>{
     }
 })
 
-/* app.get('/user', (req,res)=>{
-    require('./models/users')
-    .find()
-    .then(data => {
-        res.send(data);
-    });
-}); */
 
-app.post('/user', (req,res)=>{
-    //si encuentra devuelve el username, y sino devuelve null
-    require('./models/users')
-    .findOne(req.body)
-    .then(data => {
-        //LO HIC PARA PROBAR SI ME DEVUELVE DATA AUNQUE EL BODY NO SEA IGUAL
-        if(data==req.body){
-            res.send(data)
-        }else{
-            res.send(data)
-        }
-    })
-    .catch(err=>{
-        console.log(err)
-        res.status(404).end();
-    })
-});
+//request de user
+app.post('/user/', userCtrl.login);
 
-app.get('/products', (req,res)=>{
-    require('./models/products')
-    .find()
-    .then(data=>{
-        res.send(data);
-    })
-
-});
-
-/*app.get('/user/:username/:password',(req,res)=>{
-    require('./models/users')
-    .findById(bcrypt.hashing(req.params.password))
-    
-    
+/* app.get('/private/', auth, function(req, res){
+    res.status(200).send({message: 'Acceso permitido'})
 })
-*/
+ */
 
-/* app.get('/categories',(req,res)=>{
-    Category
-    .find()
-    .then(data=>{
-        res.send(data);
-    })
-    .catch(err=>{
-        console.log(err);
-        res.status(404).end();
-    })
-})
-        
-app.get('/categories/:id',(req,res)=>{
-        Category
+// request de productos
+app.get('/products/', productCtrl.getProducts);
+
+app.post('/product/', productCtrl.postProduct);
+
+app.post('/products', productCtrl.postProductsList);
+
+app.get('/product/:_id', productCtrl.getProductById);
+
+app.delete('/product/:_id', productCtrl.deleteProductById);
+
+
+
+//request de categorias
+
+/* app.get('/categories/:id',(req,res)=>{
+    require('./models/categories')
         .findById(req.params.id)
         .then(data=>{
             res.send(data);
@@ -95,6 +60,8 @@ app.get('/categories/:id',(req,res)=>{
             console.log(err);
             res.status(404).end()});
 }) */
+
+
 
 app.listen(3000, () => {
     //console.log("El servidor está inicializado en el puerto 3000");

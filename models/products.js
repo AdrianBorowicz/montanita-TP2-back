@@ -3,6 +3,7 @@ const {Schema} = mongoose;
 const categories = require('./categories');
 
 const Products = new Schema({
+    _id: { type: Schema.Types.ObjectId },
     name: {
         type: String,
         required: true,
@@ -19,7 +20,7 @@ const Products = new Schema({
         default: 0,
     },
     category: {
-        type: Object,
+        type: String,
     }
 });
 
