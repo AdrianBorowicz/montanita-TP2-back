@@ -24,13 +24,13 @@ function signIn(req, res) {
         if (err) {
             res.status(500).send({ message: err })
         } else if (!user) {
-            res.status(404).send({ message: `No existe el usuario ${req.body.username}` })
+            res.send(200, {message: `No existe el usuario ${req.body.username}`})
         } else {
             user.comparePassword(req.body.password, (err, isMatch) => {
                 if (err) {
-                    res.status(500).send({ msg: `Error al ingresar: ${err}` })
+                    res.status(200).send({ msg: `Error al ingresar: ${err}` })
                 } else if(!isMatch) {
-                    res.status(404).send({ msg: `Error de contraseña: ${req.body.username}` })
+                    res.status(200).send({ msg: `Error de contraseña: ${req.body.username}` })
                 } else{
                     req.user = user;
                     res.status(200).send({ message: 'Se ha logueado correctamente.', token: service.createToken(user) });
