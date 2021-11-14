@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+/* const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 export default {
@@ -17,3 +17,4 @@ export default {
     return resultado;
   }
 };
+ */

@@ -1,55 +1,47 @@
 const mongoose = require('mongoose');
-const User = require('../models/user');
+const User = require('../models/users');
 const service = require('../services/index.js');
 
-function signUp(req,res){
+
+function signUp(req, res) {
     const user = new User({
         username: req.body.username,
-    });
-    user.save((err)=>{
-        if (err){
-           res.status(500).send({message: `Error al crear el usuario: ${err}`}) 
-        }else{
-            return res.status(200).send({token: service.createToken(user)})
-        }
-    }) 
-}
+        password: req.body.password,
+        role: req.body.role
+    })
 
-function signIn(req,res){
-    User.find({username: req.body.username}, (err, user)=>{
-        if (err){
-            res.status(500).send({message: err})
+    user.save((err) => {
+        if (err) {
+            res.status(500).send({ message: `Error al crear el usuario: ${err}` })
+        } else {
+            res.status(200).send({ token: service.createToken(user) })
         }
-        if(!user){
-          res.status(404).send({message: 'No existe el usuario.'})  
-        }
-
-        req.user = user;
-        res.status(200).send({message: 'Se ha logueado correctamente.', token: service.createToken(user)});
     })
 }
 
-function login(req,res){
-    //si encuentra devuelve el username, y sino devuelve null
-    User
-    .findOne(req.body)
-    .then(data => {
-        //LO HIC PARA PROBAR SI ME DEVUELVE DATA AUNQUE EL BODY NO SEA IGUAL
-        if(data==req.body){
-            res.send(data)
-        }else{
-            res.send(data)
+function signIn(req, res) {
+    User.findOne({ username: req.body.username }, (err, user) => {
+        if (err) {
+            res.status(500).send({ message: err })
+        } else if (!user) {
+            res.status(404).send({ message: `No existe el usuario ${req.body.username}` })
+        } else {
+            user.comparePassword(req.body.password, (err, isMatch) => {
+                if (err) {
+                    res.status(500).send({ msg: `Error al ingresar: ${err}` })
+                } else if(!isMatch) {
+                    res.status(404).send({ msg: `Error de contraseña: ${req.body.username}` })
+                } else{
+                    req.user = user;
+                    res.status(200).send({ message: 'Se ha logueado correctamente.', token: service.createToken(user) });
+                }
+            })
         }
-    })
-    .catch(err=>{
-        console.log(err)
-        res.status(404).end();
-    })
+    }).select('password');
 }
 
 
-module.exports={
+module.exports = {
     signUp,
     signIn,
-    login //esta la hice previamente, hay que corroborarla.
 }
