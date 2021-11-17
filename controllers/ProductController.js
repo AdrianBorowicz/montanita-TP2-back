@@ -38,7 +38,7 @@ function getProducts(req, res) {
         .find()
         .populate({path: 'category_id', select: 'name'})
         .then(data => {
-            res.send(data);
+            return res.send(data);
         })
 }
 

@@ -24,7 +24,7 @@ function signIn(req, res) {
         if (err) {
             res.status(500).send({ message: err })
         } else if (!user) {
-            res.status(404).send({message: `No existe el usuario ${req.body.username}`});
+            res.status(404).send({message: `No existe el usuario '${req.body.username}'`});
         } else {
             user.comparePassword(req.body.password, (err, isMatch) => {
                 if (err) {
