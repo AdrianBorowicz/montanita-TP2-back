@@ -12,7 +12,7 @@ function saveDocument(res, document){
 function callBackByiD(res, err, data) {
     if (err) {
         res.status(500).send({ message: err });
-    } else if (!product) {
+    } else if (!data) {
         res.status(404).send({ message: 'Not found' });
     } else {
         res.send(data);

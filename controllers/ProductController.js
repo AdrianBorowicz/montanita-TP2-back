@@ -40,6 +40,10 @@ function getProducts(req, res) {
         .then(data => {
             return res.send(data);
         })
+        .catch(err=>{
+            console.log(err);
+            return res.status(404).send(err);
+        })
 }
 
 function getProductById(req, res) {

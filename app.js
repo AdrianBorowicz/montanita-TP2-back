@@ -67,21 +67,7 @@ app.get('/category/:_id', categoryCtrl.getCategoryById);
 app.delete('/category/:_id', auth, categoryCtrl.deleteCategoryById);
 
 
-//request de categorias
-
-/* app.get('/categories/:id',(req,res)=>{
-    require('./models/categories')
-        .findById(req.params.id)
-        .then(data=>{
-            res.send(data);
-        })
-        .catch((err)=>{
-            console.log(err);
-            res.status(404).end()});
-}) */
-
-
 
 app.listen(3000, () => {
-    //console.log("El servidor está inicializado en el puerto 3000");
+    console.log("El servidor está inicializado en el puerto 3000");
    });
