@@ -35,9 +35,9 @@ app.post('/signin/', userCtrl.signIn);
 
 app.post('/signup/', auth, userCtrl.signUp);
 
-app.get('/private/', auth, (req, res)=>{
+/* app.get('/private/', auth, (req, res)=>{
     res.status(200).send({message: 'Acceso permitido'})
-})
+}) */
 
 
 // products

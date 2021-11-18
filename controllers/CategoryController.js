@@ -29,20 +29,22 @@ function getCategories(req, res) {
     Category
         .find()
         .then(data => {
-            res.send(data);
-        }, err =>{
-            res.status(404).send({message: 'No se han encontrado categorias!'})
+            return res.send(data)
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(404).send({ message: 'No se han encontrado categorias!' });
         })
 }
 
 function getCategoryById(req, res) {
     let categoryId = req.params;
-    Category.findById(categoryId, (err, category)=>{Methods.callBackByiD(res, err,category)})
+    Category.findById(categoryId, (err, category) => { Methods.callBackByiD(res, err, category) })
 }
 
 function deleteCategoryById(req, res) {
     let categoryId = req.params;
-    Category.findByIdAndDelete(categoryId, (err, category)=>{Methods.callBackByiD(res, err, category)})
+    Category.findByIdAndDelete(categoryId, (err, category) => { Methods.callBackByiD(res, err, category) })
 }
 
 
