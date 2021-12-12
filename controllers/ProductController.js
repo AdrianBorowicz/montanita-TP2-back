@@ -48,7 +48,7 @@ function getProducts(req, res) {
 
 function getProductById(req, res) {
     let productId = req.params;
-    Product.findById(productId, (err, product)=>{Methods.callBackByiD(res, err,product)})
+    Product.findById(productId, (err, product)=>{Methods.callBackByiD(res, err,product)}).populate({path: 'category_id', select: 'name'})
 }
 
 function deleteProductById(req, res) {
