@@ -11,11 +11,11 @@ function saveDocument(res, document){
 
 function callBackByiD(res, err, data) {
     if (err) {
-        res.status(500).send({ message: err });
+        res.status(500).send({ message: err }).end();
     } else if (!data) {
-        res.status(404).send({ message: 'Not found' });
+        res.status(404).send({ message: 'Not found' }).end();
     } else {
-        res.send(data);
+        res.send(data).end();
     }
 }
 

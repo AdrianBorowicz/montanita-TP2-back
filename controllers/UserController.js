@@ -33,7 +33,7 @@ function signIn(req, res) {
                     res.status(404).send({ message: `Error de contraseña: ${req.body.username}` })
                 } else{
                     req.user = user;
-                    res.status(200).send({ message: 'Se ha logueado correctamente.', token: service.createToken(user) });
+                    res.status(200).send({ message: 'Se ha logueado correctamente.', token: service.createToken(user), username: req.body.username });
                 }
             })
         }

@@ -63,8 +63,19 @@ function getProductById(req, res) {
 }
 
 function deleteProductById(req, res) {
-    let productId = req.params;
-    Product.findByIdAndDelete(productId, (err, product) => { Methods.callBackByiD(res, err, product) })
+    //let productId= mongoose.Types.ObjectId(req.params._id)
+    let productId=req.params._id
+    
+    Product.findByIdAndDelete(req.params._id, (err, data)=>{
+        if(err){
+            console.log(err)
+            res.status(err.status).send({message:{err}}).end()
+        }
+        console.log(data)
+        res.status(200).send(data)
+    })
+    
+    //Product.findByIdAndDelete(productId, (err, product) => { Methods.callBackByiD(res, err, product) })
 }
 
 
