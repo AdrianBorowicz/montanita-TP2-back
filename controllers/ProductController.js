@@ -10,7 +10,18 @@ function postProduct(req, res) {
     product.image = req.body.image;
     product.price = req.body.price;
     product.category_id = req.body.category_id;
-    Methods.saveDocument(res, product);
+    Methods.saveDocument(res, product)
+
+    /* product.save(function(err, doc){
+        if(err){
+            console.log(err)
+            res.status(500).send({message:'No se ha guardado el producto.'})
+        }else{
+            console.log(doc)
+            res.status(200).send({message:'El producto se ha guardado exitosamente', data: doc })
+        }
+    })
+ */
 }
 
 function postProductsList(req, res) {
@@ -36,11 +47,11 @@ function postProductsList(req, res) {
 function getProducts(req, res) {
     Product
         .find()
-        .populate({path: 'category_id', select: 'name'})
+        .populate({ path: 'category_id', select: 'name' })
         .then(data => {
             return res.send(data);
         })
-        .catch(err=>{
+        .catch(err => {
             console.log(err);
             return res.status(404).send(err);
         })
@@ -48,12 +59,12 @@ function getProducts(req, res) {
 
 function getProductById(req, res) {
     let productId = req.params;
-    Product.findById(productId, (err, product)=>{Methods.callBackByiD(res, err,product)}).populate({path: 'category_id', select: 'name'})
+    Product.findById(productId, (err, product) => { Methods.callBackByiD(res, err, product) }).populate({ path: 'category_id', select: 'name' })
 }
 
 function deleteProductById(req, res) {
     let productId = req.params;
-    Product.findByIdAndDelete(productId, (err, product)=>{Methods.callBackByiD(res, err, product)})
+    Product.findByIdAndDelete(productId, (err, product) => { Methods.callBackByiD(res, err, product) })
 }
 
 

@@ -12,8 +12,9 @@ function isAuth(req,res,next){
             req.user = response;
             next();
         })
-        .catch(response=>{
-            res.status(response.status);
+        .catch(err=>{
+            console.log(err)
+            res.status(500).send(err).end();
         })
     }
 }

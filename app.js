@@ -21,6 +21,7 @@ app.use(async (req, res, next)=>{
         });
         next();
         mongoose.connection.on('error', err=>{
+            console.log(err)
         })
     } catch(err){
         console.log(err);
@@ -44,7 +45,7 @@ app.post('/signup/', auth, userCtrl.signUp);
 
 app.get('/products/', productCtrl.getProducts);
 
-app.post('/product/', auth,productCtrl.postProduct);
+app.post('/product/', auth, productCtrl.postProduct);
 
 app.post('/products/', auth, productCtrl.postProductsList);
 
